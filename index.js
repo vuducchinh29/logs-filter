@@ -6,7 +6,11 @@ const provider = new ethers.providers.JsonRpcProvider(provider_url)
 
 const interface = new ethers.utils.Interface(ROFI_ABI)
 
+const withdraw_contract = '0xBb6a8792091bFC24Cd08E7C9a1ef4f517A90bC22' //example
+
 const is_lock_rofi_tx = async (txHash) => {
+    const tx = await provider.getTransaction(txHash)
+    if (tx.to !== withdraw_contract) return console.log('Incorrect contract')
     const receipt = await provider.getTransactionReceipt(txHash)
     const logs = receipt.logs
     const rofi_transfer_log = logs[0]
